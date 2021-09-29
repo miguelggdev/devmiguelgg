@@ -1,0 +1,32 @@
+@page
+@model ProyectoCiclo3.App.Frontend.Pages.ListUsuarioModel
+@{
+}
+ 
+<h1>Listado de Usuarios</h1>
+<table class="table">
+    <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Direccion</th>
+      <th scope="col">Telefono</th>
+    </tr>
+  </thead>
+    @foreach (var usuario in Model.Usuario)
+    {
+        <tr>
+            <td>@usuario.id</td>
+            <td>@usuario.nombre</td>
+            <td>@usuario.apellidos</td>
+            <td>@usuario.direccion</td>
+            <td>@usuario.telefono</td>
+            <td>
+              <a class="btn btn-info" asp-page="./Details" asp-route-usuarioId="@usuario.id"><i class="fas fa-adjust"></i>Ver</a>
+              <a class="btn btn-info" href="">Editar</a>
+              <a class="btn btn-danger" href="">Eliminar</a>
+              </td>
+        </tr>
+    }
+</table>
