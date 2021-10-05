@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using ProyectoCiclo3.App.Dominio;
 using System.Linq;
 using System;
- 
+
 namespace ProyectoCiclo3.App.Persistencia.AppRepositorios
 {
     public class RepositorioUsuario
@@ -29,5 +29,40 @@ namespace ProyectoCiclo3.App.Persistencia.AppRepositorios
         public Usuario GetUsuarioWithId(int id){
             return usuario.SingleOrDefault(b => b.id == id);
         }
+
+        public Usuario Create(Usuario newUsuario)
+        {
+           if(usuario.Count > 0){
+           newUsuario.id=usuario.Max(r => r.id) +1; 
+            }else{
+               newUsuario.id = 1; 
+            }
+           usuario.Add(newUsuario);
+           return newUsuario;
+        }
+
+
+                
+        public Usuario Update(Usuario newUsuario){
+
+            var usuarios= usuario.SingleOrDefault(b => b.id == newUsuario.id);
+
+            if(usuarios != null){
+                usuarios.nombre = newUsuario.nombre;
+                usuarios.apellidos = newUsuario.apellidos;
+                usuarios.direccion = newUsuario.direccion;
+                usuarios.telefono = newUsuario.telefono;
+                }
+        return usuarios;
+        }
+
+        public void Delete(int id)
+        {
+        var user= usuario.SingleOrDefault(b => b.id == id);
+        usuario.Remove(user);
+        return;
+        }
+
     }
 }
+
