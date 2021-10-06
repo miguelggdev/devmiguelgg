@@ -1,11 +1,13 @@
 using System;
-namespace ProyectoCiclo3.App.Dominio
-{
-  public class Servicios {
-      public int id { get; set;}
-      public string descripcion {get; set;}
-      public int peso {get; set;}
-      public string tipo {get; set;}
-      public string presentacion{get; set;}
-  }  
+namespace ProyectoCiclo3.App.Dominio{
+    public class Servicio{
+    public int id { get; set; }
+    public string origen { get; set; }
+    public string destino { get; set; }
+    public string fecha { get; set; }
+    public string hora { get; set; }
+    public string encomienda { get; set; }
+
+    }
+
 }

@@ -28,8 +28,8 @@ namespace ProyectoCiclo3.App.Persistencia.Migrations
                     b.Property<string>("descripcion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("peso")
-                        .HasColumnType("int");
+                    b.Property<string>("peso")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("presentacion")
                         .HasColumnType("nvarchar(max)");
@@ -40,6 +40,57 @@ namespace ProyectoCiclo3.App.Persistencia.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Encomiendas");
+                });
+
+            modelBuilder.Entity("ProyectoCiclo3.App.Dominio.Servicio", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("destino")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("encomienda")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("fecha")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("hora")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("origen")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Servicio");
+                });
+
+            modelBuilder.Entity("ProyectoCiclo3.App.Dominio.Usuario", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("apellidos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("direccion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("telefono")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Usuario");
                 });
 #pragma warning restore 612, 618
         }

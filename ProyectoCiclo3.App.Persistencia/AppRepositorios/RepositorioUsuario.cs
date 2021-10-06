@@ -8,7 +8,7 @@ namespace ProyectoCiclo3.App.Persistencia.AppRepositorios
     public class RepositorioUsuario
     {
         List<Usuario> usuario;
- 
+        private readonly AppContext _appContext = new AppContext();  
     public RepositorioUsuario()
         {
             usuario= new List<Usuario>()
