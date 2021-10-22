@@ -7,57 +7,45 @@ namespace ProyectoCiclo3.App.Persistencia.AppRepositorios
 {
     public class RepositorioEncomienda
     {
-        List<Encomienda> encomienda;
- 
-    public RepositorioEncomienda()
-        {
-            encomienda= new List<Encomienda>()
-            {
-                new Encomienda{id=1,descripcion="Roku Express, Reproductor multimedia de transmisión HD",peso= "1.1 Oz",tipo= "Accesorios de TV",presentacion= "N/A"},
-                 
-            };
-        }
- 
+        // List<Encomienda> encomienda;
+        private readonly AppContext _appContext = new AppContext();  
+
         public IEnumerable<Encomienda> GetAll()
         {
-            return encomienda;
+           return _appContext.Encomienda;
         }
- 
+
         public Encomienda GetEncomiendaWithId(int id){
-            return encomienda.SingleOrDefault(b => b.id == id);
+            return _appContext.Encomienda.Find(id);
         }
 
-        public Encomienda Update(Encomienda newEncomienda)
-        {
-
-            var encomiendas= encomienda.SingleOrDefault(b => b.id == newEncomienda.id);
-
-            if(encomienda != null){
-                encomiendas.descripcion = newEncomienda.descripcion;
-                encomiendas.peso = newEncomienda.peso;
-                encomiendas.tipo = newEncomienda.tipo;
-                encomiendas.presentacion = newEncomienda.presentacion;
-            }
-        return encomiendas;
-        }
         public Encomienda Create(Encomienda newEncomienda)
         {
-           if(encomienda.Count > 0){
-           newEncomienda.id=encomienda.Max(r => r.id) +1; 
-            }else{
-               newEncomienda.id = 1; 
+            var addEncomienda = _appContext.Encomienda.Add(newEncomienda);
+            _appContext.SaveChanges();
+            return addEncomienda.Entity;
+        }
+                
+        public Encomienda Update(Encomienda newEncomienda){
+        var encomiend = _appContext.Encomienda.Find(newEncomienda.id);
+            if(encomiend != null){
+                encomiend.descripcion = newEncomienda.descripcion;
+                encomiend.peso = newEncomienda.peso;
+                encomiend.tipo = newEncomienda.tipo;
+                encomiend.presentacion = newEncomienda.presentacion;
+                //Guardar en base de datos
+                 _appContext.SaveChanges();
             }
-           encomienda.Add(newEncomienda);
-           return newEncomienda;
+        return encomiend;
         }
-        public void Delete(int id)
+        public void Delete(int id) 
         {
-        var encomien= encomienda.SingleOrDefault(b => b.id == id);
-        encomienda.Remove(encomien);
-        return;
+        var encomiend = _appContext.Encomienda.Find(id);
+        if (encomiend == null)
+            return;
+        _appContext.Encomienda.Remove(encomiend);
+        _appContext.SaveChanges();
         }
-
-       
-
+                      
     }
 }

@@ -2,61 +2,61 @@ using System.Collections.Generic;
 using ProyectoCiclo3.App.Dominio;
 using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore;
  
 namespace ProyectoCiclo3.App.Persistencia.AppRepositorios
 {
     public class RepositorioServicio
     {
-        List<Servicio> servicio;
- 
-    public RepositorioServicio()
+        // List<Servicio> servicio;
+    private readonly AppContext _appContext = new AppContext(); 
+    
+    public IEnumerable<Servicio> GetAll()
         {
-            servicio= new List<Servicio>()
-            {
-                new Servicio{id=1,origen=1,destino= 2,fecha= "6/5/2021",hora= "10:00",encomienda= 2},
-                new Servicio{id=2,origen=3,destino= 4,fecha= "9/3/2021",hora= "14:00",encomienda= 3}
-                 
-            };
+           return _appContext.Servicio.Include(u => u.origen)
+                       .Include(u => u.destino).
+                       Include(e => e.encomienda);
         }
- 
-        public IEnumerable<Servicio> GetAll()
-        {
-            return servicio;
-        }
- 
+
+
         public Servicio GetServicioWithId(int id){
-            return servicio.SingleOrDefault(b => b.id == id);
+            return _appContext.Servicio.Find(id);
         }
 
-        public Servicio Update(Servicio newServicio)
+        public Servicio Create(int origen, int destino, string fecha, string hora, int encomienda)
         {
+            var newServicio = new Servicio();
+            newServicio.destino = _appContext.Usuario.Find(destino);
+            newServicio.origen = _appContext.Usuario.Find(origen);          
+            newServicio.encomienda = _appContext.Encomienda.Find(encomienda);
+            newServicio.fecha = fecha;
+            newServicio.hora = hora;
+            var addServicio = _appContext.Servicio.Add(newServicio);
+            _appContext.SaveChanges();
+            return addServicio.Entity;
 
-            var servicios= servicio.SingleOrDefault(b => b.id == newServicio.id);
+        }
 
-            if(servicio != null){
-                servicios.origen = newServicio.origen;
-                servicios.destino = newServicio.destino;
-                servicios.fecha = newServicio.fecha;
-                servicios.hora = newServicio.hora;
-                servicios.encomienda = newServicio.encomienda;
+        public Servicio Update(Servicio newServicio){
+        var service = _appContext.Servicio.Find(newServicio.id);
+            if(service != null){
+                service.origen = newServicio.origen;
+                service.destino = newServicio.destino;
+                service.fecha = newServicio.fecha;
+                service.hora = newServicio.hora;
+                service.encomienda = newServicio.encomienda;
+                //Guardar en base de datos
+                 _appContext.SaveChanges();
             }
-        return servicios;
+        return service;
         }
-        public Servicio Create(Servicio newServicio)
+        public void Delete(int id) 
         {
-           if(servicio.Count > 0){
-           newServicio.id=servicio.Max(r => r.id) +1; 
-            }else{
-               newServicio.id = 1; 
-            }
-           servicio.Add(newServicio);
-           return newServicio;
-        }
-        public void Delete(int id)
-        {
-        var service= servicio.SingleOrDefault(b => b.id == id);
-        servicio.Remove(service);
-        return;
+        var service = _appContext.Servicio.Find(id);
+        if (service == null)
+            return;
+        _appContext.Servicio.Remove(service);
+        _appContext.SaveChanges();
         }
 
        
